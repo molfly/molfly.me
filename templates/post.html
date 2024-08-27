@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('index') }}">Back to home</a>
+<hr>
+<h2>{{ title }}</h2>
+<p><em>{{ date }}</em></p>
+<div>
+    {{ content|safe }}
+</div>
+{% endblock %}

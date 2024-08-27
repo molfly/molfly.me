@@ -73,4 +73,4 @@ def post(post_name):
     return render_template('post.html', content=html_content, title=metadata.get('title', post_name), date=formatted_date)
 
 if __name__ == '__main__':
-    app.run(debug=os.getenv('FLASK_DEBUG', 'False') == 'True')
+    app.run(debug=os.getenv('FLASK_DEBUG', 'False') == 'True', host='127.0.0.1', port=8000)

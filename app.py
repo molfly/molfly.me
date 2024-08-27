@@ -65,8 +65,8 @@ def blog_home():
     posts = sorted(posts, key=lambda x: x['date'], reverse=True)  # Сортировка постов по дате, начиная с самых новых
     return render_template('index.html', posts=posts)
 
-# Отдельные посты доступны по адресу /blog/post/<post_name>
-@app.route('/post/<post_name>')
+# Отдельные посты доступны по адресу /blog/<post_name>
+@app.route('/blog/<post_name>')
 def post(post_name):
     metadata, html_content = get_post_metadata_and_content(post_name)
     formatted_date = format_date(metadata.get('date', 'Unknown Date'))

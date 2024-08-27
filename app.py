@@ -49,9 +49,9 @@ def format_date(date_str):
     except ValueError:
         return "Unknown Date"
 
-# Маршрут для отображения списка всех постов
-@app.route('/post/')
-def post_index():
+# Главная страница блога доступна по адресу /blog/
+@app.route('/blog/')
+def blog_home():
     posts = []
     for filename in os.listdir(POSTS_PATH):
         if filename.endswith('.md'):
@@ -65,7 +65,7 @@ def post_index():
     posts = sorted(posts, key=lambda x: x['date'], reverse=True)  # Сортировка постов по дате, начиная с самых новых
     return render_template('index.html', posts=posts)
 
-# Маршрут для отображения конкретного поста
+# Отдельные посты доступны по адресу /blog/post/<post_name>
 @app.route('/post/<post_name>')
 def post(post_name):
     metadata, html_content = get_post_metadata_and_content(post_name)

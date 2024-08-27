@@ -3,12 +3,17 @@ import os
 import markdown2
 import yaml
 from datetime import datetime
+import re
 
 app = Flask(__name__)
 
 # Путь к папке с постами
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 POSTS_PATH = os.path.join(BASE_DIR, 'posts')
+
+def highlight_code_blocks(content):
+    # Добавляет класс hljs для работы с highlight.js
+    return re.sub(r'<pre><code class="(\w+)">', r'<pre><code class="\1 hljs">', content)
 
 def get_post_metadata_and_content(post_name):
     post_path = os.path.join(POSTS_PATH, f'{post_name}.md')
@@ -30,7 +35,8 @@ def get_post_metadata_and_content(post_name):
             metadata = {}
             markdown_content = content
 
-        html_content = markdown2.markdown(markdown_content)
+        html_content = markdown2.markdown(markdown_content, extras=["fenced-code-blocks"])
+        html_content = highlight_code_blocks(html_content)  # Поддержка подсветки синтаксиса
     
     return metadata, html_content
 

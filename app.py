@@ -4,8 +4,10 @@ import markdown2
 import yaml
 from datetime import datetime
 import re
+from prometheus_flask_exporter import PrometheusMetrics
 
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)
 
 # Путь к папке с постами
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -71,6 +73,11 @@ def post(post_name):
     metadata, html_content = get_post_metadata_and_content(post_name)
     formatted_date = format_date(metadata.get('date', 'Unknown Date'))
     return render_template('post.html', content=html_content, title=metadata.get('title', post_name), date=formatted_date)
+
+# Эндпоинт для метрик Prometheus
+@app.route('/metrics')
+def metrics_endpoint():
+    return metrics.generate_latest()
 
 if __name__ == '__main__':
     app.run(debug=os.getenv('FLASK_DEBUG', 'False') == 'True', host='127.0.0.1', port=8000)
